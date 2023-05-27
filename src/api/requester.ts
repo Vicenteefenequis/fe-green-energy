@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export const request = (config?: AxiosRequestConfig, contentType?: string) => {
   const service = axios.create({
-    baseURL: 'http://localhost:8080/api',
+    baseURL: 'http://localhost:8000',
     ...config,
   });
 
