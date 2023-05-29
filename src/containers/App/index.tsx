@@ -7,6 +7,7 @@ import CreateIndicatorForm from './form';
 import { useIndicatorMutation } from '../../queries/useIndicatorMutation';
 import { MAPPED_INDICATORS } from '../../models/indicator';
 import MapComponent from './map';
+import Loader from '../../components/Loader';
 
 export const options = {
   vAxis: { title: 'Porcentagem' },
@@ -44,38 +45,48 @@ const customStyleMap = {
 };
 
 export default function App() {
-  const { data: indicators } = useIndicatorListQuery();
+  const { data: indicators, isLoading: isLoadingIndicatorList } =
+    useIndicatorListQuery();
   const { mutate: mutateIndicator } = useIndicatorMutation();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenMapModal, setShowMap] = useState(false);
 
-  
-  
+  if (isLoadingIndicatorList)
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        <Loader isLoading={true} />
+      </div>
+    );
 
   return (
     <>
       <Header />
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-
-      <button
-        onClick={() => setIsOpen(true)}
-        className="rounded-500 bg-blue-500 mx-5 my-5 text-white  hover:bg-sky-700"
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
-        Adicionar nova informação de cidade
-      </button>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="rounded-500 bg-blue-500 mx-5 my-5 text-white  hover:bg-sky-700"
+        >
+          Adicionar nova informação de cidade
+        </button>
 
-      <button
-      onClick={() => setShowMap(true)}
-
-      className="rounded-500 bg-green-500 mx-5 my-5 text-white  hover:bg-sky-700"
-      >
-        Visualizar mapa
-      </button>
+        <button
+          onClick={() => setShowMap(true)}
+          className="rounded-500 bg-green-500 mx-5 my-5 text-white  hover:bg-sky-700"
+        >
+          Visualizar mapa
+        </button>
       </div>
 
       <div className="flex flex-wrap px-8 gap-3">
         {indicators?.map((indicator) => (
           <Chart
+            key={indicator.indicator}
             chartType="ComboChart"
             width="100%"
             height="400px"
@@ -95,14 +106,14 @@ export default function App() {
         ))}
       </div>
 
-
- <Modal
-  isOpen={isOpenMapModal}
-  onRequestClose={() => setShowMap(false)}
-  style={customStyleMap}
-  contentLabel='Mapa Energético'>
-  <MapComponent />
-</Modal>
+      <Modal
+        isOpen={isOpenMapModal}
+        onRequestClose={() => setShowMap(false)}
+        style={customStyleMap}
+        contentLabel="Mapa Energético"
+      >
+        <MapComponent />
+      </Modal>
 
       <Modal
         isOpen={isOpen}

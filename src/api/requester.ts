@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export const request = (config?: AxiosRequestConfig, contentType?: string) => {
   const service = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'http://localhost:8000/api',
     ...config,
   });
 
@@ -18,6 +18,16 @@ export const request = (config?: AxiosRequestConfig, contentType?: string) => {
       return req;
     },
     (error) => Promise.reject(error)
+  );
+
+  service.interceptors.response.use(
+    (res) => res,
+    (error) => {
+      if (error.response.status === 401) {
+        window.location.href = '/login';
+      }
+      return Promise.reject(error);
+    }
   );
 
   return {

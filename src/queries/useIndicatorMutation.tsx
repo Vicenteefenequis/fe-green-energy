@@ -11,5 +11,8 @@ export const useIndicatorMutation = () => {
       queryClient.invalidateQueries(['indicators']);
       toast('Indicador criado com sucesso!');
     },
+    onError: (error: any) => {
+      toast(error.response?.data?.message);
+    },
   });
 };
