@@ -1,21 +1,27 @@
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace User {
   export type Login = {
-    username: string;
+    email: string;
     password: string;
   };
 
   export type Output = {
-    refresh: string;
-    access: string;
+    id: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    gender: string;
+    phone_number: string;
+    city: string;
   };
 
   export type Register = {
-    username: string;
-    password: string;
+    email: string;
+    password1: string;
+    password2: string;
     first_name: string;
     last_name: string;
   };
 
-  export type OutputRegister = Omit<Register, 'password'>;
+  export type OutputRegister = Omit<Register, "password">;
 }

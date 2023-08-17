@@ -1,13 +1,10 @@
-import { request } from '../api/requester';
-import { Indicator } from '../models/indicator';
+import { request } from "../api/requester";
+import { Response } from "../models/general";
+import { Indicator } from "../models/indicator";
 
-export const getIndicators = async (): Promise<Indicator.Model[]> => {
-  const { data } = await request({
-    headers: {
-      Authorization: `Bearer ${
-        JSON.parse(window.localStorage.getItem('@auth') || '').access
-      }`,
-    },
-  }).get<Indicator.Model[]>('/energy-indicators/');
+export const getIndicators = async (): Promise<Response<Indicator.Model>> => {
+  const { data } = await request().get<Response<Indicator.Model>>(
+    "indicators/"
+  );
   return data;
 };

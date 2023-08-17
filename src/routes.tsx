@@ -1,21 +1,31 @@
-import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import App from './containers/App';
-import Login from './containers/Login';
-import Signup from './containers/Signup';
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import App from "./containers/App";
+import Login from "./containers/Login";
+import Signup from "./containers/Signup";
+import CreateProject from "./containers/CreateProject";
+import Project from "./containers/Project";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
   },
   {
-    path: '/login',
+    path: "/entrar",
     element: <Login />,
   },
   {
-    path: '/signup',
+    path: "/registro",
     element: <Signup />,
+  },
+  {
+    path: "/criar/projeto",
+    element: <CreateProject />,
+  },
+  {
+    path: "/projeto/:id",
+    element: <Project />,
   },
 ]);
 

@@ -1,47 +1,37 @@
-import React from 'react';
-
-// import { Container } from './styles';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useWhoAmi } from "../../queries/useWhoAmi";
 
 const Header: React.FC = () => {
+  const { data: whoAmi } = useWhoAmi();
+
   return (
-    <div className="navbar w-full bg-base-100">
-      <div className="flex-none">
-        <button className="btn btn-square btn-ghost">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            className="inline-block w-5 h-5 stroke-current"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>
-          </svg>
-        </button>
-      </div>
-      <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
-      </div>
-      <div className="flex-none">
-        <button className="btn btn-square btn-ghost">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            className="inline-block w-5 h-5 stroke-current"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-            ></path>
-          </svg>
-        </button>
-      </div>
+    <div>
+      <nav className="bg-white border-gray-200 dark:bg-green-600">
+        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+          <a href="https://flowbite.com" className="flex items-center">
+            <img
+              src="https://cdn.dribbble.com/users/2092693/screenshots/5551684/green_energy-01.jpg"
+              className="h-12 mr-3 rounded-full"
+              alt="Flowbite Logo"
+            />
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              Green Energy
+            </span>
+          </a>
+          <div className="flex items-center">
+            {whoAmi?.first_name ? (
+              <p className="text-white font-semibold">
+                {whoAmi.first_name.toUpperCase()}
+              </p>
+            ) : (
+              <Link className="text-white font-semibold" to="/entrar">
+                Login
+              </Link>
+            )}
+          </div>
+        </div>
+      </nav>
     </div>
   );
 };

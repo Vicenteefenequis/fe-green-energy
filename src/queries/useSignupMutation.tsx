@@ -1,16 +1,18 @@
-import { useMutation } from '@tanstack/react-query';
-import { signupUser } from '../services/signupUser';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useMutation } from "@tanstack/react-query";
+import { signupUser } from "../services/signupUser";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { User } from "../models/user";
+import { AxiosError } from "axios";
 
 export const useSignupMutation = () => {
   const navigate = useNavigate();
-  return useMutation({
-    mutationKey: ['signup'],
+  return useMutation<User.Register, AxiosError<User.Register>, User.Register>({
+    mutationKey: ["signup"],
     mutationFn: signupUser,
     onSuccess: () => {
-      toast('Registro feito com sucesso!');
-      navigate('/');
+      toast("Registro feito com sucesso!");
+      navigate("/");
     },
   });
 };
