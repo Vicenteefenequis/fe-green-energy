@@ -61,7 +61,7 @@ type MappedIndicators = {
   [key: string]: string;
 };
 
-type KeyIndicator = keyof Indicator.Model;
+export type KeyIndicator = keyof Indicator.Model;
 
 export const KEY_INDICATOR: KeyIndicator[] = [
   "total_residential_electricity_use_per_capita",

@@ -9,7 +9,7 @@ const Header: React.FC = () => {
     <div>
       <nav className="bg-white border-gray-200 dark:bg-green-600">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
-          <a href="https://flowbite.com" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img
               src="https://cdn.dribbble.com/users/2092693/screenshots/5551684/green_energy-01.jpg"
               className="h-12 mr-3 rounded-full"
@@ -18,7 +18,7 @@ const Header: React.FC = () => {
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
               Green Energy
             </span>
-          </a>
+          </Link>
           <div className="flex items-center">
             {whoAmi?.first_name ? (
               <p className="text-white font-semibold">
