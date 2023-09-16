@@ -14,5 +14,12 @@ export const useSignupMutation = () => {
       toast("Registro feito com sucesso!");
       navigate("/");
     },
+    onError: (error) => {
+      if (error?.response?.status === 400) {
+        toast.error("Usuário já existe!");
+      } else {
+        toast.error("Erro ao registrar!");
+      }
+    },
   });
 };

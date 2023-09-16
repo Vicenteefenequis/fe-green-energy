@@ -1,5 +1,5 @@
-import { FormikProps, withFormik } from "formik";
-import React, { useEffect } from "react";
+import { FormikErrors, FormikProps, withFormik } from "formik";
+import React from "react";
 import { User } from "../../models/user";
 import * as Yup from "yup";
 
@@ -7,7 +7,6 @@ type FormValues = User.Register;
 
 type FormProps = {
   onSubmit: (values: FormValues) => void;
-  error?: User.Register;
 };
 
 const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
@@ -15,13 +14,10 @@ const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
   values,
   setFieldValue,
   errors,
-  error,
-  setErrors,
+  submitCount,
 }) => {
-  useEffect(() => {
-    if (!error) return;
-    setErrors(error);
-  }, [error, setErrors]);
+  const hasError = (field: keyof FormikErrors<User.Register>) =>
+    errors[field] && submitCount > 0;
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
@@ -40,7 +36,7 @@ const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
             name="first_name"
             className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          {errors.first_name && (
+          {hasError("first_name") && (
             <span className="text-red-900 text-xs">{errors.first_name}</span>
           )}
         </div>
@@ -61,7 +57,7 @@ const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
             name="last_name"
             className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          {errors.last_name && (
+          {hasError("last_name") && (
             <span className="text-red-900 text-xs">{errors.last_name}</span>
           )}
         </div>
@@ -81,7 +77,7 @@ const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
             name="email"
             className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          {errors.email && (
+          {hasError("email") && (
             <span className="text-red-900 text-xs">{errors.email}</span>
           )}
         </div>
@@ -106,7 +102,7 @@ const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
             onChange={(e) => setFieldValue("password1", e.target.value)}
             className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          {errors.password1 && (
+          {hasError("password1") && (
             <span className="text-red-900 text-xs">{errors.password1}</span>
           )}
         </div>
@@ -131,7 +127,7 @@ const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
             onChange={(e) => setFieldValue("password2", e.target.value)}
             className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          {errors.password2 && (
+          {hasError("password2") && (
             <span className="text-red-900 text-xs">{errors.password2}</span>
           )}
         </div>

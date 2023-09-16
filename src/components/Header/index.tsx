@@ -13,7 +13,7 @@ const Header: React.FC = () => {
             <img
               src="https://cdn.dribbble.com/users/2092693/screenshots/5551684/green_energy-01.jpg"
               className="h-12 mr-3 rounded-full"
-              alt="Flowbite Logo"
+              alt="Green Logo"
             />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
               Green Energy

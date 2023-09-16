@@ -2,9 +2,9 @@ import Header from "../../components/Header";
 import { useIndicatorListQuery } from "../../queries/useIndicatorListQuery";
 import Loader from "../../components/Loader";
 import { Link, useNavigate } from "react-router-dom";
-import Swap from "../../components/swap";
 import RenderIf from "../../components/RenderIf";
 import { LuMapPin } from "react-icons/lu";
+import Swap from "../../components/Swap";
 
 export default function App() {
   const { data: indicators, isLoading: isLoadingMeIndicators } =
