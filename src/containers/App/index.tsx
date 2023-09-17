@@ -15,17 +15,6 @@ export default function App() {
 
   const navigate = useNavigate();
 
-  // Estado para controlar a abertura/fechamento do diálogo
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-
-  const handleDialogOpen = () => {
-    setDialogOpen(true);
-  };
-
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
-
   return (
     <>
       <Header />
