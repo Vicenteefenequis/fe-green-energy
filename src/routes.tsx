@@ -4,6 +4,7 @@ import App from "./containers/App";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import CreateProject from "./containers/CreateProject";
+import CreateProjectState from "./containers/CreateProjectState";
 import Project from "./containers/Project";
 
 const router = createBrowserRouter([
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/criar/projeto",
     element: <CreateProject />,
+  },
+  {
+    path: "/criar/projeto/estado",
+    element: <CreateProjectState/>
   },
   {
     path: "/projeto/:id",
