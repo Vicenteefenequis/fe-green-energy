@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Routes from "./routes";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,10 +15,21 @@ const queryClient = new QueryClient({
   },
 });
 
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#008000",
+    }
+  },
+});
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Routes />
+      <ThemeProvider theme={theme}>
+        <Routes />
+      </ThemeProvider>
       <ToastContainer />
     </QueryClientProvider>
   </React.StrictMode>

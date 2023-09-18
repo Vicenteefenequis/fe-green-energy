@@ -1,13 +1,12 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Header from '../../components/Header';
 import { useIndicatorListQuery } from '../../queries/useIndicatorListQuery';
 import Loader from '../../components/Loader';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import RenderIf from '../../components/RenderIf';
 import { LuMapPin } from 'react-icons/lu';
 import Swap from '../../components/Swap';
-import AlertDialog from '../../dialogs/Dialog';
+import AlertDialog from '../../components/Dialog';
 
 export default function App() {
   const { data: indicators, isLoading: isLoadingMeIndicators } =
@@ -34,8 +33,9 @@ export default function App() {
                   <span>Você não tem nenhum projeto atualmente.</span>
                 </div>
               }
-              WhenTrue={indicators?.content.results.map((indicator) => (
+              WhenTrue={indicators?.content.results.map((indicator, key) => (
                 <div
+                  key={key}
                   className="min-w-7xl mt-6 p-6 border border-gray-200 mb-8 bg-gray-50"
                   onClick={() => navigate(`/projeto/${indicator.id}`)}
                 >
@@ -52,7 +52,7 @@ export default function App() {
               ))}
             />
           </RenderIf>
-            <AlertDialog/>
+          <AlertDialog />
         </div>
       </div>
     </>
