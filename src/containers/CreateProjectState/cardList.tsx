@@ -25,7 +25,7 @@ const CardList: React.FC<CardListProps> = ({ cardsData, onCardClick }) => {
             <Typography variant="h5" component="div" color={"#F8F8FF"}>
               {card.title}
             </Typography>
-            <Typography variant="body2" color="text.secondary" color={"#F8F8FF"}>
+            <Typography variant="body2" color="text.secondary">
               {card.content}
             </Typography>
           </CardContent>
