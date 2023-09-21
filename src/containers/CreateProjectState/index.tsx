@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useIndicatorMutation } from "../../queries/useIndicatorMutation";
 import Main from "../ProjectMain/Main";
 import CardList from "./cardList";
+import IndicatorByItem from "../../components/IndicatorByItem";
 
 const CreateProjectState: React.FC = () => {
 
@@ -55,7 +56,8 @@ const CreateProjectState: React.FC = () => {
       return(
         <div >
             <Main/>
-            <CardList cardsData={cardsData} onCardClick={handleCardClick} />
+            <IndicatorByItem cardsData={cardsData} onCardClick={handleCardClick} />
+             <CardList cardsData={cardsData} onCardClick={handleCardClick} />
         </div>
       )
       

@@ -24,7 +24,7 @@ const Login: React.FC = () => {
             alt="Green Energy"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Entrar na sua conta
+            Realizar login
           </h2>
         </div>
 

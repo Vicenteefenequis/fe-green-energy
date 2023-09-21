@@ -4,11 +4,6 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CustomChart from "../ProjectMain/Charts";
 
-interface CardListProps {
-  cardsData: CardData[];
-  onCardClick: (nomeEstado: string) => void;
-}
-
 const CardList: React.FC<CardListProps> = ({ cardsData, onCardClick }) => {
   return (
     <div>
@@ -26,7 +21,6 @@ const CardList: React.FC<CardListProps> = ({ cardsData, onCardClick }) => {
             transition: "transform 0.2s ease",
           }}
         >
-          {/* Renderiza o gráfico dentro do card com os dados de cada card */}
           <CardContent>
             <Typography variant="h5" component="div" color={"#F8F8FF"}>
               {card.title}
