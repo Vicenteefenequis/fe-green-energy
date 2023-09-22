@@ -6,6 +6,7 @@ import Signup from "./containers/Signup";
 import CreateProject from "./containers/CreateProject";
 import CreateProjectState from "./containers/CreateProjectState";
 import Project from "./containers/Project";
+import Cadastro from "./containers/Cadastro";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
     path: "/projeto/:id",
     element: <Project />,
   },
+{
+  path: "/cadastro",
+  element: <Cadastro/>,
+}
 ]);
 
 const Routes: React.FC = () => {

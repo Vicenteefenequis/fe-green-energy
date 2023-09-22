@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, LinearProgress, Typography, Box, Grid } from '@mui/material';
+import BrazilMap from './BrazilMap';
 
 const IndicatorByItem: React.FC<CardListProps> = ({ cardsData }) => {
   return (

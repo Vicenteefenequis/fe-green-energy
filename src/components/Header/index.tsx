@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import { useWhoAmi } from '../../queries/useWhoAmi';
+import { Link } from 'react-router-dom';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Logout'];
@@ -117,13 +118,15 @@ function Header() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
+              <Link to={"/cadastro"}>
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleCloseNavMenu}
                 sx={{ my: 2, color: 'black', display: 'block' }}
               >
                 {page}
               </Button>
+              </Link>
             ))}
           </Box>
 
