@@ -4,9 +4,11 @@ import App from "./containers/App";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import CreateProject from "./containers/CreateProject";
-import CreateProjectState from "./containers/CreateProjectState";
 import Project from "./containers/Project";
 import Cadastro from "./containers/Cadastro";
+import ProjectState from "./containers/ProjectState";
+import Header from "./components/Header";
+import ComparationState from "./containers/ComparationState";
 
 const router = createBrowserRouter([
   {
@@ -27,16 +29,20 @@ const router = createBrowserRouter([
   },
   {
     path: "/criar/projeto/estado",
-    element: <CreateProjectState/>
+    element: <ProjectState />,
+  },
+  {
+    path: "/comparar/estado/:state",
+    element: <ComparationState />,
   },
   {
     path: "/projeto/:id",
     element: <Project />,
   },
-{
-  path: "/cadastro",
-  element: <Cadastro/>,
-}
+  {
+    path: "/cadastro",
+    element: <Cadastro />,
+  },
 ]);
 
 const Routes: React.FC = () => {

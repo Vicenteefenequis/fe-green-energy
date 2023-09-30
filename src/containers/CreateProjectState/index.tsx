@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useIndicatorMutation } from "../../queries/useIndicatorMutation";
-import Main from "../ProjectMain/Main";
 import IndicatorByItem from "../../components/IndicatorByItem";
 
 const CreateProjectState: React.FC = () => {
@@ -182,7 +181,6 @@ const cardsData: CardData = {
       }, [isSuccessIndicatorMutation, navigate]);
       return(
         <div >
-            <Main/>
             <IndicatorByItem cardsData={cardsData} onCardClick={handleCardClick} />
         </div>
       )

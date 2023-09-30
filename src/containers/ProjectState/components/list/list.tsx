@@ -1,16 +1,24 @@
+import { Card, CardContent, Typography } from "@mui/material";
 import React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import CustomChart from "../ProjectMain/Charts";
+import CustomChart from "../../../ProjectMain/Charts";
+import { Chart } from "../../../../models/indicator";
 
-const CardList: React.FC<CardListProps> = ({ cardsData, onCardClick }) => {
+type Indicator = {
+  title: string;
+  content: string;
+  chart: Chart[];
+};
+
+type Props = {
+  indicators: Indicator[];
+};
+
+const List: React.FC<Props> = ({ indicators }) => {
   return (
     <div>
-      {cardsData.map((card, nomeEstado) => (
+      {indicators.map((indicator, key) => (
         <Card
-          key={nomeEstado}
-          onClick={() => onCardClick(card.title)}
+          key={key}
           style={{
             marginBottom: "16px",
             marginTop: "8px",
@@ -23,17 +31,17 @@ const CardList: React.FC<CardListProps> = ({ cardsData, onCardClick }) => {
         >
           <CardContent>
             <Typography variant="h5" component="div" color={"#F8F8FF"}>
-              {card.title}
+              {indicator.title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {card.content}
+              {indicator.content}
             </Typography>
           </CardContent>
-          <CustomChart data={card.chartData} chartType={"BarChart"} />
+          <CustomChart data={indicator.chart} chartType={"BarChart"} />
         </Card>
       ))}
     </div>
   );
 };
 
-export default CardList;
+export default List;
