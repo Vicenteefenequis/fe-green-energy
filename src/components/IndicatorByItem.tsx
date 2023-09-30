@@ -1,47 +1,40 @@
 import React from 'react';
 import { Card, CardContent, LinearProgress, Typography, Box, Grid } from '@mui/material';
-import BrazilMap from './BrazilMap';
 
 const IndicatorByItem: React.FC<CardListProps> = ({ cardsData }) => {
   return (
     <div>
-      {cardsData.map((card) => (
-        
-        <Card key={card.title} style={{ margin: '16px' }}>
-          <CardContent>
+      <Card style={{ margin: '16px' }}>
+        <CardContent>
           <Typography variant="h5" color="textSecondary" align="center">
-        Uso de energia elétrica residencial per capita(KWh/ano)
-              </Typography>
-            <Box display="flex" alignItems="center" justifyContent="space-between">
-              <Typography variant="subtitle1" color="textSecondary" align="left">
-                Estado
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary" align="right">
-                Resultado
-              </Typography>
-            </Box>
-            <Grid container alignItems="center">
+            <strong>Uso de energia elétrica residencial per capita(KWh/ano)</strong>
+          </Typography>
+          <Box display="flex" alignItems="center" justifyContent="space-between">
+            <Typography variant="subtitle1" color="textSecondary" align="left">
+              <strong>Estado</strong>
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary" align="right">
+              <strong>Resultado</strong>
+            </Typography>
+          </Box>
+          {cardsData.state.map((state) => (
+            <Grid container alignItems="center" key={state.title}>
               <Grid item xs={3}>
                 <Typography variant="subtitle1" color="textSecondary" align="left">
-                  {card.title}
+                  {state.title}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
                 <LinearProgress
-                  sx={{ height: 20, width: '100%' }}
+                  sx={{ color: 'secondary', backgroundColor: 'lightgrey' }}
                   variant="determinate"
-                  value={card.chartData[1].value}
+                  value={state.chartData[1].value}
                 />
               </Grid>
-              <Grid item xs={3}>
-                <Typography variant="subtitle1" color="textSecondary" align="right">
-                  {`${card.chartData[1].value}%`}
-                </Typography>
-              </Grid>
             </Grid>
-          </CardContent>
-        </Card>
-      ))}
+          ))}
+        </CardContent>
+      </Card>
     </div>
   );
 };

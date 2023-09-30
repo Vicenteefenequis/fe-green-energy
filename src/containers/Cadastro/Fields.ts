@@ -1,4 +1,4 @@
-export type Login = {
+export type Fields = {
     titulo: string;
     descricao: string;
     tipoProjeto: TipoLocal 

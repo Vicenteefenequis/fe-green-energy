@@ -2,7 +2,6 @@ import React, { useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useIndicatorMutation } from "../../queries/useIndicatorMutation";
 import Main from "../ProjectMain/Main";
-import CardList from "./cardList";
 import IndicatorByItem from "../../components/IndicatorByItem";
 
 const CreateProjectState: React.FC = () => {
@@ -16,32 +15,45 @@ const CreateProjectState: React.FC = () => {
 "Consumo total de energia"]
 
 
-    const cardsData: CardData[] = [
-        {
-          title: "Goiás",
-          content: "GO",
-          chartData: [
-            { label: valuesGraphPlot[1], value: 24 },
-            { label: valuesGraphPlot[2], value: 36 },
-          ],
-        },
-        {
-          title: "Rio Grande do Sul",
-          content: "RS",
-          chartData: [
-            { label: valuesGraphPlot[3], value: 15 },
-            { label: valuesGraphPlot[4], value: 365 },
-          ],
-        },
-        {
-          title: "Maranhão",
-          content: "MA",
-          chartData: [
-            { label: valuesGraphPlot[5], value: 50 },
-            { label: valuesGraphPlot[6], value: 15 },
-          ],
-        },
-      ];
+const cardsData: CardData = {
+  state: [
+    {
+      title: "Goiás",
+      content: "GO",
+      chartData: [
+        { label: valuesGraphPlot[1], value: 14 },
+        { label: valuesGraphPlot[2], value: 36 },
+      ],
+    },
+    {
+      title: "Amazonas",
+      content: "AM",
+      chartData: [
+        { label: valuesGraphPlot[1], value: 54 },
+        { label: valuesGraphPlot[2], value: 45 },
+      ],
+    },
+
+    {
+      title: "Pará",
+      content: "PA",
+      chartData: [
+        { label: valuesGraphPlot[1], value: 36 },
+        { label: valuesGraphPlot[2], value: 56 },
+      ],
+    },
+    {
+      title: "Maranhão",
+      content: "MA",
+      chartData: [
+        { label: valuesGraphPlot[1], value: 98 },
+        { label: valuesGraphPlot[2], value: 89 },
+      ],
+    },
+  ],
+};
+
+
       const handleCardClick = useCallback((estado: string) => {
         alert(`Estado ${estado} foi clicado.`);
       }, []);
@@ -57,7 +69,6 @@ const CreateProjectState: React.FC = () => {
         <div >
             <Main/>
             <IndicatorByItem cardsData={cardsData} onCardClick={handleCardClick} />
-             <CardList cardsData={cardsData} onCardClick={handleCardClick} />
         </div>
       )
       
