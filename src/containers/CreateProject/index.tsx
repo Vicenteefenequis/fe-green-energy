@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import Header from "../../components/Header";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProjectForm from "./form";
 import { useIndicatorMutation } from "../../queries/useIndicatorMutation";
-import Main from "../ProjectMain/Main";
+import BreadCrumb from "../../components/BreadCrumb";
 
-const CreateProject: React.FC = () => {
+const ProjectCity: React.FC = () => {
   const navigate = useNavigate();
   const { mutate: mutateIndicator, isSuccess: isSuccessIndicatorMutation } =
     useIndicatorMutation();
@@ -17,10 +16,10 @@ const CreateProject: React.FC = () => {
 
   return (
     <div>
-      <Main/>
-           <ProjectForm onSubmit={(values) => mutateIndicator(values)} />
+      <BreadCrumb routes={[{ link: "/", text: "Projetos" }]} />
+      <ProjectForm onSubmit={(values) => mutateIndicator(values)} />
     </div>
   );
 };
 
-export default CreateProject;
+export default ProjectCity;

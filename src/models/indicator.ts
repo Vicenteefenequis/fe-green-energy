@@ -89,3 +89,8 @@ export const MAPPED_INDICATORS: MappedIndicators = {
   average_duration_of_power_outages:
     "Duração média das interrupções de energia elétrica(em horas)",
 };
+
+export interface Chart {
+  label: string;
+  value: number;
+}
