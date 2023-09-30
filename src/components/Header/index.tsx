@@ -1,39 +1,116 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import { useWhoAmi } from "../../queries/useWhoAmi";
 
-const Header: React.FC = () => {
+const settings = ["Profile", "Logout"];
+
+function Header() {
   const { data: whoAmi } = useWhoAmi();
 
-  return (
-    <div>
-      <nav className="bg-white border-gray-200 dark:bg-green-600">
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
-          <Link to="/" className="flex items-center">
-            <img
-              src="https://cdn.dribbble.com/users/2092693/screenshots/5551684/green_energy-01.jpg"
-              className="h-12 mr-3 rounded-full"
-              alt="Green Logo"
-            />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              Green Energy
-            </span>
-          </Link>
-          <div className="flex items-center">
-            {whoAmi?.first_name ? (
-              <p className="text-white font-semibold">
-                {whoAmi.first_name.toUpperCase()}
-              </p>
-            ) : (
-              <Link className="text-white font-semibold" to="/entrar">
-                Login
-              </Link>
-            )}
-          </div>
-        </div>
-      </nav>
-    </div>
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
   );
-};
 
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  return (
+    <AppBar color="transparent" position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <ElectricBoltIcon
+            sx={{ display: { xs: "none", md: "flex", color: "green" }, mr: 1 }}
+          />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "green",
+              textDecoration: "none",
+            }}
+          >
+            GREEN ENERGY
+          </Typography>
+
+          <ElectricBoltIcon
+            sx={{ display: { xs: "flex", md: "none", color: "green" }, mr: 1 }}
+          />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "green",
+              textDecoration: "none",
+            }}
+          >
+            GREEN ENERGY
+          </Typography>
+
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar
+                  alt={whoAmi?.first_name}
+                  src="/static/images/avatar/2.jpg"
+                />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+}
 export default Header;
