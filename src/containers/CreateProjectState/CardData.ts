@@ -1,15 +1,23 @@
 interface CardData {
+  titles: Title[];
+}
+
+interface Title {
   title: string;
+  states: State[];
+}
+
+interface State {
+  name: string;
   content: string;
-  chartData: ChartData[]; 
+  chartData: ChartData;
 }
 
 interface ChartData {
-  label: string;
   value: number;
 }
 
 interface CardListProps {
-  cardsData: CardData[];
+  cardsData: CardData;
   onCardClick: (nomeEstado: string) => void;
 }

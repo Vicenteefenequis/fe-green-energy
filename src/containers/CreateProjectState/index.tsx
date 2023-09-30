@@ -16,44 +16,159 @@ const CreateProjectState: React.FC = () => {
 
 
 const cardsData: CardData = {
-  state: [
+  titles: [
     {
-      title: "Goiás",
-      content: "GO",
-      chartData: [
-        { label: valuesGraphPlot[1], value: 14 },
-        { label: valuesGraphPlot[2], value: 36 },
+      title: "Uso de energia elétrica residencial per capita(KWh/ano)",
+      states: [
+        {
+          name: "Goiás",
+          content: "GO",
+          chartData: 
+            {value: 14 },
+          
+        },
+        {
+          name: "Amazonas",
+          content: "AM",
+          chartData: 
+            {value: 95 },
+      
+        },
       ],
     },
     {
-      title: "Amazonas",
-      content: "AM",
-      chartData: [
-        { label: valuesGraphPlot[1], value: 54 },
-        { label: valuesGraphPlot[2], value: 45 },
+      title: "Número de habitantes com ligação regular à rede de distribuição",
+      states: [
+        {
+          name: "Paraná",
+          content: "PR",
+          chartData: 
+            {value: 22 },
+          
+        },
+        {
+          name: "Santa Catarina",
+          content: "SC",
+          chartData: 
+            {value: 64 },
+          
+        },
+        {
+          name: "Goiás",
+          content: "GO",
+          chartData: 
+            {value: 25 },
+          
+        },
+        
+      ],
+    },
+    {
+      title: "Uso total de energia elétrica (kWh)",
+      states: [
+        {
+          name: "São Paulo",
+          content: "SP",
+          chartData: 
+            {value: 25 },
+          
+        },
+        {
+          name: "Rio de Janeiro",
+          content: "RJ",
+          chartData: 
+            {value: 54 },
+          
+        },
+        {
+          name: "Minas Gerais",
+          content: "MG",
+          chartData: 
+            {value: 69 },
+          
+        },
+        
       ],
     },
 
     {
-      title: "Pará",
-      content: "PA",
-      chartData: [
-        { label: valuesGraphPlot[1], value: 36 },
-        { label: valuesGraphPlot[2], value: 56 },
+      title: "Consumo total de energia elétrica em edifícios públicos(kWh)",
+      states: [
+        {
+          name: "Maranhão",
+          content: "MA",
+          chartData: 
+            {value: 58 },
+          
+        },
+        {
+          name: "Bahia",
+          content: "BA",
+          chartData: 
+            {value: 98 },
+          
+        },
+        {
+          name: "Sergipe",
+          content: "SE",
+          chartData: 
+            {value: 74 },
+        },
+      ],
+    },
+
+    {
+      title: "Consumo total de energia elétrica em edifícios públicos(kWh)",
+      states: [
+
+        {
+          name: "Paraná",
+          content: "SC",
+          chartData: 
+            {value: 74 },
+        },
+      ],
+    },
+
+    {
+      title: "Consumo total de energia elétrica em edifícios públicos(kWh)",
+      states: [
+
+        {
+          name: "Paraná",
+          content: "SC",
+          chartData: 
+            {value: 74 },
+        },
+      ],
+    },
+
+    
+    {
+      title: "Área total destes edifícios (𝑚2)",
+      states: [
+        {
+          name: "São Paulo",
+          content: "SP",
+          chartData: 
+            {value: 360 },
+        },
       ],
     },
     {
-      title: "Maranhão",
-      content: "MA",
-      chartData: [
-        { label: valuesGraphPlot[1], value: 98 },
-        { label: valuesGraphPlot[2], value: 89 },
+      title: "Consumo total de energia",
+      states: [
+        {
+          name: "Goiás",
+          content: "GO",
+          chartData: 
+            {value: 220 },
+        },
       ],
     },
   ],
+  
 };
-
-
       const handleCardClick = useCallback((estado: string) => {
         alert(`Estado ${estado} foi clicado.`);
       }, []);

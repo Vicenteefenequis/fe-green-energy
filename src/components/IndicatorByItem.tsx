@@ -4,37 +4,51 @@ import { Card, CardContent, LinearProgress, Typography, Box, Grid } from '@mui/m
 const IndicatorByItem: React.FC<CardListProps> = ({ cardsData }) => {
   return (
     <div>
-      <Card style={{ margin: '16px' }}>
-        <CardContent>
-          <Typography variant="h5" color="textSecondary" align="center">
-            <strong>Uso de energia elétrica residencial per capita(KWh/ano)</strong>
-          </Typography>
-          <Box display="flex" alignItems="center" justifyContent="space-between">
-            <Typography variant="subtitle1" color="textSecondary" align="left">
-              <strong>Estado</strong>
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary" align="right">
-              <strong>Resultado</strong>
-            </Typography>
-          </Box>
-          {cardsData.state.map((state) => (
-            <Grid container alignItems="center" key={state.title}>
-              <Grid item xs={3}>
-                <Typography variant="subtitle1" color="textSecondary" align="left">
-                  {state.title}
+      <Grid container spacing={2}>
+        {cardsData.titles.map((titleData) => (
+          <Grid item xs={6} key={titleData.title}>
+            <Card style={{ margin: '10px', height: '100%' }}>
+              <CardContent>
+                <Typography variant="h6" color="black" align="center">
+                  <strong>{titleData.title}</strong>
                 </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <LinearProgress
-                  sx={{ color: 'secondary', backgroundColor: 'lightgrey' }}
-                  variant="determinate"
-                  value={state.chartData[1].value}
-                />
-              </Grid>
-            </Grid>
-          ))}
-        </CardContent>
-      </Card>
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                  <Typography 
+                  variant="subtitle1" color="textSecondary" align="left">
+                    <strong>Estado</strong>
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary" align="right">
+                    <strong>Resultado</strong>
+                  </Typography>
+                </Box>
+                {titleData.states.map((state) => (
+                  <div key={state.name}>
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                      <Typography variant="subtitle1" color="black" align="left">
+                        {state.name}
+                      </Typography>
+                      {state.chartData && state.chartData && (
+                        <Typography variant="subtitle1" color="black" align="right">
+                          {`${state.chartData.value}`}
+                        </Typography>
+                      )}
+                    </Box>
+                    {state.chartData && state.chartData && (
+                      <LinearProgress
+                        sx={{
+                          backgroundColor: state.chartData.value > 100 ? 'primary.main' : 'lightgrey',
+                        }}
+                        variant="determinate"
+                        value={state.chartData?.value || 0}
+                      />
+                    )}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 };
