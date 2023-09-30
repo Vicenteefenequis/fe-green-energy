@@ -7,8 +7,8 @@ import CreateProject from "./containers/CreateProject";
 import Project from "./containers/Project";
 import Cadastro from "./containers/Cadastro";
 import ProjectState from "./containers/ProjectState";
-import Header from "./components/Header";
 import ComparationState from "./containers/ComparationState";
+import IndicatorByItem from "./components/indicator/IndicatorByItem";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "/cadastro",
     element: <Cadastro />,
+  },
+  {
+    path: "/indicadores",
+    element: <IndicatorByItem/>,
   },
 ]);
 
