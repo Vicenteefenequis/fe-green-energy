@@ -58,7 +58,7 @@ const IndicatorByItem: React.FC<Props> = ({
                 <LinearProgress
                   sx={{ color: "secondary", backgroundColor: "lightgrey" }}
                   variant="determinate"
-                  value={50}
+                  value={chart.value}
                 />
               </Grid>
             </Grid>

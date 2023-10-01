@@ -11,10 +11,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import { useWhoAmi } from "../../queries/useWhoAmi";
-
-const settings = ["Profile", "Logout"];
+import { useLogoutMutation } from "../../queries/useLogout";
 
 function Header() {
+  const { mutate: mutateLogout } = useLogoutMutation();
+
+  const settings = [{ action: () => mutateLogout(), text: "Logout" }];
+
   const { data: whoAmi } = useWhoAmi();
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -34,7 +37,10 @@ function Header() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <ElectricBoltIcon
-            sx={{ display: { xs: "none", md: "flex", color: "green" }, mr: 1 }}
+            sx={{
+              display: { xs: "none", md: "flex", color: "green" },
+              mr: 1,
+            }}
           />
           <Typography
             variant="h6"
@@ -76,7 +82,13 @@ function Header() {
             GREEN ENERGY
           </Typography>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flex: 1,
+              justifyContent: "flex-end",
+            }}
+          >
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
@@ -102,8 +114,14 @@ function Header() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem
+                  key={setting.text}
+                  onClick={() => {
+                    setting.action();
+                    setAnchorElUser(null);
+                  }}
+                >
+                  <Typography textAlign="center">{setting.text}</Typography>
                 </MenuItem>
               ))}
             </Menu>

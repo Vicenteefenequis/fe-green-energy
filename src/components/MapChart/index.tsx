@@ -121,7 +121,7 @@ const MapChart = ({ selectState }: Props) => {
                     },
                     hover: {
                       ...geographyStyle,
-                      fill: "red",
+                      fill: "#084808",
                     },
                     pressed: {
                       ...geographyStyle,

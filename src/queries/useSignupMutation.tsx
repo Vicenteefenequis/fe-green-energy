@@ -16,7 +16,9 @@ export const useSignupMutation = () => {
     },
     onError: (error) => {
       if (error?.response?.status === 400) {
-        toast.error("Usuário já existe!");
+        toast.error(
+          "O registro não foi concluído. Por favor, verifique as informações inseridas e tente novamente. "
+        );
       } else {
         toast.error("Erro ao registrar!");
       }

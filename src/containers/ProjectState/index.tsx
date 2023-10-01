@@ -4,6 +4,7 @@ import BreadCrumb from "../../components/BreadCrumb";
 import Header from "../../components/Header";
 import MapChart from "../../components/MapChart";
 import { useNavigate } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
 
 const ProjectState: React.FC = () => {
   const navigate = useNavigate();
@@ -82,13 +83,13 @@ const ProjectState: React.FC = () => {
   ];
 
   return (
-    <div>
+    <Box>
       <Header />
       <BreadCrumb routes={routes} />
       <MapChart
         selectState={(state) => navigate(`/comparar/estado/${state}`)}
       />
-    </div>
+    </Box>
   );
 };
 
