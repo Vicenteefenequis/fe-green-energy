@@ -10,6 +10,7 @@ import {
   KeyIndicator,
   MAPPED_INDICATORS,
 } from "../../models/indicator";
+import BreadCrumb from "../../components/BreadCrumb";
 
 const OPTIONS = {
   vAxis: { title: "Porcentagem" },
@@ -49,11 +50,12 @@ const Project: React.FC = () => {
 
   return (
     <>
-      <Header />
       <Loader isLoading={isLoadingIndicator || isLoadingIndicators} />
-      <div className="flex flex-wrap px-8 gap-3">
-        {KEY_INDICATOR.map((keyIndicator) => (
+      <div className="flex flex-wrap gap-3">
+        <Header />
+        {KEY_INDICATOR.map((keyIndicator, key) => (
           <Chart
+            key={key}
             chartType="ComboChart"
             width="100%"
             height="400px"

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ProjectForm from "./form";
 import { useIndicatorMutation } from "../../queries/useIndicatorMutation";
 import BreadCrumb from "../../components/BreadCrumb";
+import Header from "../../components/Header";
 
 const ProjectCity: React.FC = () => {
   const navigate = useNavigate();
@@ -16,7 +17,8 @@ const ProjectCity: React.FC = () => {
 
   return (
     <div>
-      <BreadCrumb routes={[{ link: "/", text: "Projetos" }]} />
+      <Header />
+      <BreadCrumb routes={[{ link: "/", text: "Listagem de Projetos" }, { link: "/criar/projeto", text: "Criar Projeto Cidade" }]} />
       <ProjectForm onSubmit={(values) => mutateIndicator(values)} />
     </div>
   );
