@@ -2,11 +2,14 @@ import { FormikErrors, FormikProps, withFormik } from "formik";
 import React from "react";
 import { User } from "../../models/user";
 import * as Yup from "yup";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Box, TextField, Grid, Link, FormHelperText } from "@mui/material";
 
 type FormValues = User.Register;
 
 type FormProps = {
   onSubmit: (values: FormValues) => void;
+  isLoadingSignup: boolean;
 };
 
 const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
@@ -14,134 +17,105 @@ const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
   values,
   setFieldValue,
   errors,
+  isLoadingSignup,
   submitCount,
 }) => {
   const hasError = (field: keyof FormikErrors<User.Register>) =>
-    errors[field] && submitCount > 0;
+    !!errors[field] && submitCount > 0;
 
   return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
-      <div>
-        <label
-          htmlFor="first_name"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          Nome
-        </label>
-        <div className="mt-2">
-          <input
-            value={values.first_name}
-            onChange={(e) => setFieldValue("first_name", e.target.value)}
-            id="first_name"
+    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            autoComplete="given-name"
             name="first_name"
-            className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            required
+            fullWidth
+            id="first_name"
+            label="Nome"
+            autoFocus
+            error={hasError("first_name")}
+            onChange={e => setFieldValue("first_name", e.target.value)}
+            helperText={hasError("first_name") && errors.first_name}
           />
-          {hasError("first_name") && (
-            <span className="text-red-900 text-xs">{errors.first_name}</span>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <label
-          htmlFor="last_name"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          Sobrenome
-        </label>
-        <div className="mt-2">
-          <input
-            value={values.last_name}
-            onChange={(e) => setFieldValue("last_name", e.target.value)}
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            fullWidth
             id="last_name"
+            label="Sobre Nome"
             name="last_name"
-            className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            error={hasError("last_name")}
+            autoComplete="family-name"
+            onChange={e => setFieldValue("last_name", e.target.value)}
+            helperText={hasError("last_name") && errors.last_name}
           />
-          {hasError("last_name") && (
-            <span className="text-red-900 text-xs">{errors.last_name}</span>
-          )}
-        </div>
-      </div>
-      <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          Email
-        </label>
-        <div className="mt-2">
-          <input
-            value={values.email}
-            onChange={(e) => setFieldValue("email", e.target.value)}
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
             id="email"
+            label="Email"
             name="email"
-            className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-          {hasError("email") && (
-            <span className="text-red-900 text-xs">{errors.email}</span>
-          )}
-        </div>
-      </div>
+            autoComplete="email"
+            error={hasError("email")}
+            onChange={e => setFieldValue("email", e.target.value)}
+            helperText={hasError("email") && errors.email}
 
-      <div>
-        <div className="flex items-center justify-between">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Senha
-          </label>
-        </div>
-        <div className="mt-2">
-          <input
-            id="password"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
             name="password1"
+            label="Senha"
             type="password"
-            autoComplete="current-password"
-            value={values.password1}
-            onChange={(e) => setFieldValue("password1", e.target.value)}
-            className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            id="password1"
+            error={hasError("password1")}
+            onChange={e => setFieldValue("password1", e.target.value)}
+            helperText={hasError("password1") && errors.password1}
           />
-          {hasError("password1") && (
-            <span className="text-red-900 text-xs">{errors.password1}</span>
-          )}
-        </div>
-      </div>
 
-      <div>
-        <div className="flex items-center justify-between">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Repita senha
-          </label>
-        </div>
-        <div className="mt-2">
-          <input
-            id="password"
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
             name="password2"
+            label="Repetir Senha"
             type="password"
-            autoComplete="current-password"
-            value={values.password2}
-            onChange={(e) => setFieldValue("password2", e.target.value)}
-            className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            id="password2"
+            error={hasError("password2")}
+            onChange={e => setFieldValue("password2", e.target.value)}
+            helperText={hasError("password2") && errors.password2}
           />
-          {hasError("password2") && (
-            <span className="text-red-900 text-xs">{errors.password2}</span>
-          )}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
 
-      <div>
-        <button
-          type="submit"
-          className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Registrar
-        </button>
-      </div>
-    </form>
+      <LoadingButton
+        loading={isLoadingSignup}
+        loadingPosition="start"
+        variant="contained"
+        fullWidth
+        type="submit"
+        sx={{ mt: 3, mb: 2 }}
+      >
+        Registrar
+      </LoadingButton>
+
+      <Grid container justifyContent="flex-end">
+        <Grid item>
+          <Link href="/entrar" variant="body2">
+            Você já tem uma conta? Entrar
+          </Link>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 

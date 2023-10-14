@@ -1,24 +1,14 @@
 import React from "react";
 import { MAPPED_INDICATORS } from "../../models/indicator";
-import BreadCrumb from "../../components/BreadCrumb";
 import Header from "../../components/Header";
 import MapChart from "../../components/MapChart";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 const ProjectState: React.FC = () => {
   const navigate = useNavigate();
 
-  const routes = [
-    {
-      link: "/",
-      text: "Listagem de Projetos",
-    },
-    {
-      link: "/criar/projeto/estado",
-      text: "Criar Projeto Estado",
-    },
-  ];
+
   const INDICATORS_CHART = [
     {
       title: "Goiás",
@@ -85,7 +75,6 @@ const ProjectState: React.FC = () => {
   return (
     <Box>
       <Header />
-      <BreadCrumb routes={routes} />
       <MapChart
         selectState={(state) => navigate(`/comparar/estado/${state}`)}
       />

@@ -1,27 +1,113 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import ProjectForm from "./form";
-import { useIndicatorMutation } from "../../queries/useIndicatorMutation";
-import BreadCrumb from "../../components/BreadCrumb";
-import Header from "../../components/Header";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepButton from '@mui/material/StepButton';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Header from '../../components/Header';
+import FormStepProject from './steps/form-project';
+import { StepProvider, useStepContext } from './hook';
+import FormStepCity from './steps/form-city';
+import FormStepIndicator from './steps/form-indicator';
+import { useIndicatorMutation } from '../../queries/useIndicatorMutation';
+import Loader from '../../components/Loader';
+import { useNavigate } from 'react-router-dom';
 
-const ProjectCity: React.FC = () => {
-  const navigate = useNavigate();
-  const { mutate: mutateIndicator, isSuccess: isSuccessIndicatorMutation } =
-    useIndicatorMutation();
 
-  useEffect(() => {
-    if (!isSuccessIndicatorMutation) return;
-    navigate("/");
-  }, [isSuccessIndicatorMutation, navigate]);
+
+export function HorizontalNonLinearStepper() {
+
+  const { steps, activeStep, completed, handleReset, allStepsCompleted, setPayload, handleComplete, payload } = useStepContext()
+
+  const { mutate: mutateIndicator, isLoading: isLoadingIndicator } = useIndicatorMutation();
+
+  const navigate = useNavigate()
+
+  const handleConfirmAdvance = (form: any) => {
+    setPayload(old => ({ ...old, ...form }))
+    handleComplete()
+  }
+
+  const renderStep: { [x: number]: React.ReactNode } = {
+    1: <FormStepProject onSubmit={infoProject => handleConfirmAdvance(infoProject)} />,
+    2: <FormStepCity onSubmit={infoCity => handleConfirmAdvance(infoCity)} />,
+    3: <FormStepIndicator onSubmit={infoIndicator => handleConfirmAdvance(infoIndicator)} />,
+  }
+
+  React.useEffect(() => {
+    if (allStepsCompleted()) {
+      mutateIndicator(payload)
+    }
+  }, [mutateIndicator, payload])
 
   return (
-    <div>
+    <Box sx={{ width: '100%' }}>
       <Header />
-      <BreadCrumb routes={[{ link: "/", text: "Listagem de Projetos" }, { link: "/criar/projeto", text: "Criar Projeto Cidade" }]} />
-      <ProjectForm onSubmit={(values) => mutateIndicator(values)} />
-    </div>
-  );
-};
+      <Stepper sx={{ my: 10 }} nonLinear activeStep={activeStep}>
+        {steps.map((label, index) => (
+          <Step key={label} completed={completed[index]}>
+            <StepButton color="inherit">
+              {label}
+            </StepButton>
+          </Step>
+        ))}
+      </Stepper>
+      <div>
+        {allStepsCompleted() ? (
+          <React.Fragment>
+            {isLoadingIndicator ? <Loader isLoading={true} /> :
+              <Typography sx={{ mt: 2, mb: 1, mx: 5 }}>
+                Você completou todas as informações!!
+              </Typography>
+            }
 
-export default ProjectCity;
+            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+              <Button fullWidth variant="contained" sx={{ mx: 5 }} onClick={() => navigate('/')}>Navegar para Projetos</Button>
+            </Box>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            {renderStep[activeStep + 1]}
+          </React.Fragment>
+        )}
+      </div>
+    </Box>
+  );
+}
+
+
+export function ControlStep() {
+  const { activeStep,
+    completed,
+    steps,
+    completedSteps,
+    totalSteps,
+  } = useStepContext()
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+      <Box sx={{ flex: '1 1 auto' }} />
+      {activeStep !== steps.length &&
+        (completed[activeStep] ? (
+          <Typography variant="caption">
+            Você já completou o passo {activeStep + 1}.{' '}
+          </Typography>
+        ) : (
+          <Button variant="contained" sx={{ px: 2, mx: 2 }} type="submit">
+            {completedSteps() === totalSteps() - 1
+              ? 'Finalizar'
+              : 'Avançar'}
+          </Button>
+        ))}
+    </Box>
+  )
+}
+
+export default function WithProvider() {
+  return (
+    <StepProvider>
+      <HorizontalNonLinearStepper />
+    </StepProvider>
+  )
+} 

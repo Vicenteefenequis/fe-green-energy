@@ -10,7 +10,6 @@ import {
   KeyIndicator,
   MAPPED_INDICATORS,
 } from "../../models/indicator";
-import BreadCrumb from "../../components/BreadCrumb";
 
 const OPTIONS = {
   vAxis: { title: "Porcentagem" },
