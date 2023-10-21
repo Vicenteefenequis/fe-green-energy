@@ -3,80 +3,29 @@ import { MAPPED_INDICATORS } from "../../models/indicator";
 import Header from "../../components/Header";
 import MapChart from "../../components/MapChart";
 import { useNavigate } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { useStateFilterQuery } from "../../queries/useStateFilterQuery";
+import { toast } from "react-toastify";
 
 const ProjectState: React.FC = () => {
   const navigate = useNavigate();
 
-
-  const INDICATORS_CHART = [
-    {
-      title: "Goiás",
-      content: "GO",
-      chart: [
-        {
-          label:
-            MAPPED_INDICATORS["total_residential_electricity_use_per_capita"],
-          value: 14,
-        },
-        {
-          label: MAPPED_INDICATORS["percentage_electricity_supply"],
-          value: 36,
-        },
-      ],
-    },
-    {
-      title: "Amazonas",
-      content: "AM",
-      chart: [
-        {
-          label:
-            MAPPED_INDICATORS["total_residential_electricity_use_per_capita"],
-          value: 54,
-        },
-        {
-          label: MAPPED_INDICATORS["percentage_electricity_supply"],
-          value: 45,
-        },
-      ],
-    },
-    {
-      title: "Pará",
-      content: "PA",
-      chart: [
-        {
-          label:
-            MAPPED_INDICATORS["total_residential_electricity_use_per_capita"],
-          value: 36,
-        },
-        {
-          label: MAPPED_INDICATORS["percentage_electricity_supply"],
-          value: 56,
-        },
-      ],
-    },
-    {
-      title: "Maranhão",
-      content: "MA",
-      chart: [
-        {
-          label:
-            MAPPED_INDICATORS["total_residential_electricity_use_per_capita"],
-          value: 98,
-        },
-        {
-          label: MAPPED_INDICATORS["percentage_electricity_supply"],
-          value: 89,
-        },
-      ],
-    },
-  ];
+  const { data: stateFilter } = useStateFilterQuery()
 
   return (
     <Box>
       <Header />
+      <Box sx={{ mx: 5, my: 5 }}>
+        <Typography variant="h4" component="h2" gutterBottom>
+          Mapa de indicadores por estado
+        </Typography>
+
+        <Typography variant="body1" >
+          Selecione um estado para visualizar os indicadores e poder comparar entre eles.
+        </Typography>
+      </Box>
       <MapChart
-        selectState={(state) => navigate(`/comparar/estado/${state}`)}
+        selectState={(state) => stateFilter?.results.some(stateFilter => stateFilter.slug === state) ? navigate(`/comparar/estado/${state}`) : toast.error('Estado sem dados disponíveis')}
       />
     </Box>
   );

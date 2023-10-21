@@ -9,14 +9,12 @@ import {
 } from "@mui/material";
 import {
   Chart,
-  Indicator,
-  MAPPED_INDICATORS,
 } from "../../../../models/indicator";
 
 type Props = {
   charts: Chart[];
   isCity?: boolean;
-  indicatorLabel: keyof Indicator.Model;
+  indicatorLabel: string;
 };
 
 const IndicatorByItem: React.FC<Props> = ({
@@ -29,7 +27,7 @@ const IndicatorByItem: React.FC<Props> = ({
       <Card style={{ margin: "16px" }}>
         <CardContent>
           <Typography variant="h5" color="textSecondary" align="center">
-            <strong>{MAPPED_INDICATORS[indicatorLabel]}</strong>
+            <strong>{indicatorLabel}</strong>
           </Typography>
           <Box
             display="flex"

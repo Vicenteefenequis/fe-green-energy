@@ -10,17 +10,18 @@ import FormStepProject from './steps/form-project';
 import { StepProvider, useStepContext } from './hook';
 import FormStepCity from './steps/form-city';
 import FormStepIndicator from './steps/form-indicator';
-import { useIndicatorMutation } from '../../queries/useIndicatorMutation';
+import { useProjectCreateMutation } from '../../queries/useProjectCreateMutation';
 import Loader from '../../components/Loader';
 import { useNavigate } from 'react-router-dom';
+import { toProjectCreateBody } from './helper';
 
 
 
 export function HorizontalNonLinearStepper() {
 
-  const { steps, activeStep, completed, handleReset, allStepsCompleted, setPayload, handleComplete, payload } = useStepContext()
+  const { steps, activeStep, completed, allStepsCompleted, setPayload, handleComplete, payload } = useStepContext()
 
-  const { mutate: mutateIndicator, isLoading: isLoadingIndicator } = useIndicatorMutation();
+  const { mutate: mutateProject, isLoading: isLoadingProjectCreate } = useProjectCreateMutation();
 
   const navigate = useNavigate()
 
@@ -37,9 +38,9 @@ export function HorizontalNonLinearStepper() {
 
   React.useEffect(() => {
     if (allStepsCompleted()) {
-      mutateIndicator(payload)
+      mutateProject(toProjectCreateBody(payload))
     }
-  }, [mutateIndicator, payload])
+  }, [mutateProject, payload])
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -56,7 +57,7 @@ export function HorizontalNonLinearStepper() {
       <div>
         {allStepsCompleted() ? (
           <React.Fragment>
-            {isLoadingIndicator ? <Loader isLoading={true} /> :
+            {isLoadingProjectCreate ? <Loader isLoading={true} /> :
               <Typography sx={{ mt: 2, mb: 1, mx: 5 }}>
                 Você completou todas as informações!!
               </Typography>

@@ -100,7 +100,6 @@ type Props = {
 const MapChart = ({ selectState }: Props) => {
   const renderGeograph = (
     dataSource: any,
-    countryId: string,
     countryColor: string
   ) => {
     return (
@@ -113,7 +112,7 @@ const MapChart = ({ selectState }: Props) => {
                   key={geo.rsmKey + "-Geography"}
                   stroke="#FFF"
                   geography={geo}
-                  onClick={() => selectState(geo.properties.woe_name)}
+                  onClick={() => selectState(geo.properties.id)}
                   style={{
                     default: {
                       ...geographyStyle,
@@ -163,7 +162,7 @@ const MapChart = ({ selectState }: Props) => {
       width={600}
       height={600}
     >
-      {renderGeograph(brTopoJson, "BR", "green")}
+      {renderGeograph(brTopoJson, "green")}
     </ComposableMap>
   );
 };

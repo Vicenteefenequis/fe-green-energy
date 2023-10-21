@@ -1,7 +1,7 @@
 import { request } from "../api/requester";
-import { Indicator } from "../models/indicator";
+import { TIndicatorResult } from "../interfaces/api";
 
-export const getIndicator = async (id: string): Promise<Indicator.Model> => {
-  const { data } = await request().get<Indicator.Model>(`indicators/${id}/`);
+export const getIndicator = async (id: string): Promise<TIndicatorResult[]> => {
+  const { data } = await request().get<TIndicatorResult[]>(`projects/${id}/city-indicator/`);
   return data;
 };

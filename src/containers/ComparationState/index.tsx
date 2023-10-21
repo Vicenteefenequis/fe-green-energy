@@ -10,15 +10,16 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import { IndicatorItem } from "../ProjectState/components";
-import { KEY_INDICATOR, MAPPED_INDICATORS } from "../../models/indicator";
+import { useStateFilterQuery } from "../../queries/useStateFilterQuery";
+import { useStateBatchMutation } from "../../queries/useStateBatchMutation";
+import Loader from "../../components/Loader";
 
-const STATES_MOCK = ["Goiás", "São Paulo", "Rio de Janeiro", "Espirito santo"];
 
 const style = {
   position: "absolute" as const,
@@ -41,44 +42,61 @@ const ComparationState: React.FC = () => {
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
 
+  const { data: stateFilter } = useStateFilterQuery()
+
+  const { mutate: mutateStateBatch, data: dataIndicators, isLoading: isLoadingBatch } = useStateBatchMutation()
+
+
+  useEffect(() => {
+    if (!state) {
+      navigate('/not-found')
+      return;
+    }
+    mutateStateBatch([state])
+  }, [state])
+
+  useEffect(() => {
+    mutateStateBatch([...selectedStates, state])
+  }, [selectedStates, state])
+
   return (
     <div>
       <Header />
+      <Loader isLoading={isLoadingBatch} />
       <Card sx={{ p: 2 }}>
         <Chip
           deleteIcon={<EditIcon />}
           onDelete={() => navigate("/criar/projeto/estado")}
-          label={state}
+          label={stateFilter?.results.find(stateFilter => stateFilter.slug === state)?.name}
         />
         {selectedStates
           .filter((state) => !!state)
-          .map((state) => (
+          .map((state, key) => (
             <Chip
+              key={key}
               sx={{ mx: 2 }}
               onDelete={() =>
                 setSelectedStates((old) => old.filter((item) => item !== state))
               }
-              label={state}
+              label={stateFilter?.results.find(stateFilter => stateFilter.slug === state)?.name}
             />
           ))}
         <Button endIcon={<AddIcon />} sx={{ ml: 5 }} onClick={handleOpen}>
           Adicionar
         </Button>
       </Card>
-      {KEY_INDICATOR.map((key) => (
+
+      {dataIndicators?.map((indicator, key) => (
         <IndicatorItem
-          indicatorLabel={key}
-          charts={[
-            { label: state, value: 20 },
-            ...selectedStates
-              .filter((state) => !!state)
-              .map((state, index) => ({
-                label: state,
-                value: index + 1 * 10,
-              })),
-          ]}
+          key={key}
+          indicatorLabel={indicator.name}
+          charts={indicator.data.map((data => ({
+            label: data.location_name,
+            value: data.value
+          })))}
         />
       ))}
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -100,6 +118,7 @@ const ComparationState: React.FC = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Estados"
+              displayEmpty
               onChange={(event) => {
                 setSelectedStates((old) => [
                   ...old,
@@ -110,8 +129,8 @@ const ComparationState: React.FC = () => {
                 setOpen(false);
               }}
             >
-              {STATES_MOCK.map((state) => (
-                <MenuItem value={state}>{state}</MenuItem>
+              {stateFilter?.results.filter(s => s.slug !== state).filter(state => !selectedStates.includes(state.slug)).map((state, key) => (
+                <MenuItem key={key} value={state.slug}>{state.name}</MenuItem>
               ))}
             </Select>
           </FormControl>

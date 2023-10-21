@@ -7,7 +7,6 @@ import CreateProject from "./containers/CreateProject";
 import Project from "./containers/Project";
 import Cadastro from "./containers/Cadastro";
 import ProjectState from "./containers/ProjectState";
-import Header from "./components/Header";
 import ComparationState from "./containers/ComparationState";
 
 const router = createBrowserRouter([

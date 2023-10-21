@@ -1,60 +1,102 @@
 import * as React from 'react';
 import Header from '../../components/Header';
-import { useIndicatorListQuery } from '../../queries/useIndicatorListQuery';
+import { useProjectListQuery } from '../../queries/useProjectListQuery';
 import Loader from '../../components/Loader';
 import { useNavigate } from 'react-router-dom';
 import RenderIf from '../../components/RenderIf';
-import { LuMapPin } from 'react-icons/lu';
 import Swap from '../../components/Swap';
+import { Card, CardContent, Typography, Button, Box } from '@mui/material';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import AlertDialog from '../../components/Dialog';
 
 export default function App() {
-  const { data: indicators, isLoading: isLoadingMeIndicators } =
-    useIndicatorListQuery();
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleDialogOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+  const { data: projects, isLoading: isLoadingMeIndicators } =
+    useProjectListQuery();
+
 
   return (
     <>
       <Header />
-      <div className="flex w-full items-center justify-center px-6">
-        <div className="w-full mt-6 p-6 bg-white border border-gray-200 shadow">
-          <h1 className="mb-2 font-semibold text-3xl tracking-tight text-gray-900">
-            Projetos
-          </h1>
 
-          <Loader isLoading={isLoadingMeIndicators} />
 
-          <RenderIf condition={!isLoadingMeIndicators}>
-            <Swap
-              condition={!!indicators?.content.results.length}
-              WhenFalse={
-                <div className="min-w-7xl mt-6 p-6 border border-gray-200 mb-8">
-                  <span>Você não tem nenhum projeto atualmente.</span>
-                </div>
+      <Loader isLoading={isLoadingMeIndicators} />
+
+      <Box sx={{ mx: 5, my: 5 }}>
+        <Typography variant="h4" component="h2" gutterBottom>
+          Listagem de projetos para comparação de indicadores
+        </Typography>
+
+        <Typography variant="body1" >
+          Navegue ou crie novos projetos e obtenha uma visão detalhada dos indicadores de cada iniciativa em prol da sustentabilidade e energia limpa.
+        </Typography>
+      </Box>
+
+      <RenderIf condition={!isLoadingMeIndicators}>
+        <Swap
+          condition={!!projects?.results.length}
+          WhenFalse={
+            <Card variant="outlined" sx={{ mx: 5, my: 5 }}>
+              <CardContent>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                  Você não tem nenhum projeto atualmente.
+                </Typography>
+              </CardContent>
+            </Card>
+          }
+          WhenTrue={projects?.results.map((project, key) => (
+            <Card onClick={() => navigate(`/projeto/${project.id}`)} variant="outlined" key={key} sx={{
+              mx: 5,
+              my: 5,
+              ":hover": {
+                cursor: 'pointer'
               }
-              WhenTrue={indicators?.content.results.map((indicator, key) => (
-                <div
-                  key={key}
-                  className="min-w-7xl mt-6 p-6 border border-gray-200 mb-8 bg-gray-50"
-                  onClick={() => navigate(`/projeto/${indicator.id}`)}
-                >
-                  <h1 className="font-bold">{indicator.name.toUpperCase()}</h1>
-                  <h4 className="font-medium mt-5 mb-5">
-                    {indicator.description}
-                  </h4>
+            }}>
+              <CardContent>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                  {project.name}
+                </Typography>
+                <Typography variant="h5" component="div">
+                  {project.description}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  {project.location_name}
+                </Typography>
+                <Typography variant="body2">
+                  {project.created_at}
+                </Typography>
+              </CardContent>
 
-                  <div className="flex items-center gap-2">
-                    <LuMapPin className="text-zinc-500" />
-                    <p className="text-zinc-500">{indicator.city}</p>
-                  </div>
-                </div>
-              ))}
-            />
-          </RenderIf>
-          <AlertDialog />
-        </div>
-      </div>
+            </Card>
+          ))}
+        />
+
+        <Button
+          sx={{ mx: 5, my: 5 }}
+          color="primary"
+          variant="contained"
+          size="small"
+          onClick={handleDialogOpen}
+          endIcon={<ArrowForwardIosIcon />}
+        >
+          Criar novo projeto
+        </Button>
+      </RenderIf>
+
+      <AlertDialog open={open} handleClose={handleClose} />
     </>
   );
 }
