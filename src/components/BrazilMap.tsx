@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Feature, FeatureCollection } from "geojson";
 import goiasData from "../json/brazilstates.json";
-import { fetchLocations } from "../queries/locationStations";
+import { fetchLocationStations } from "../services/locationStations";
 
 const BrazilMap: React.FC = () => {
   const mapStyle = {
@@ -14,14 +14,8 @@ const BrazilMap: React.FC = () => {
 
   const mapRef = useRef<L.Map | null>(null);
   const [geoJsonData, setGeoJsonData] = useState<FeatureCollection>(null as any);
-  const [locations, setLocations] = useState<Array<any>>([]);
-  const [pinLocation, setPinLocation] = useState<[number, number] | null>(null);
-
-  // Localizações fictícias das usinas fotovoltaicas
-  const solarPlants = [
-    { latitude: -16.4, longitude: -49.4, name: "Usina Fotovoltaica 1" },
-    { latitude: -16.2, longitude: -49.2, name: "Usina Fotovoltaica 2" }
-  ];
+  const [locations, setLocations] = useState<LocationStation[]>([]);
+  const [clickedLocation, setClickedLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
     const goiasFeature = goiasData.features.find(
@@ -48,22 +42,23 @@ const BrazilMap: React.FC = () => {
 
   useEffect(() => {
     const loadLocations = async () => {
-      const fetchedLocations = await fetchLocations();
+      const fetchedLocations = await fetchLocationStations();
+      console.log(fetchedLocations);  // <-- Adicione esta linha
       setLocations(fetchedLocations);
     };
     loadLocations();
   }, []);
-  
+
   const onEachFeature = (feature: Feature, layer: L.Layer) => {
     layer.on({
       click: (event) => {
         const latitude = event.latlng.lat;
         const longitude = event.latlng.lng;
-        setPinLocation([latitude, longitude]);
+        setClickedLocation({ lat: latitude, lng: longitude });
       },
     });
   };
-  
+
   const geoJsonOptions = {
     style: {
       color: "blue",
@@ -79,7 +74,7 @@ const BrazilMap: React.FC = () => {
         <MapContainer
           ref={mapRef}
           style={mapStyle}
-          center={[-16.350000, -49.300000]} // Centro aproximado de Goiás
+          center={[-16.350000, -49.300000]}
           zoom={7}
         >
           <TileLayer
@@ -93,28 +88,26 @@ const BrazilMap: React.FC = () => {
               style={geoJsonOptions}
             />
           )}
-          {pinLocation && (
-            <Marker position={pinLocation}>
+          {locations.map((location: LocationStation, index) => (
+            <Marker
+              key={index}
+              position={[location.latitude, location.longitude]}
+            >
               <Popup>
-                Latitude: {pinLocation[0]}, Longitude: {pinLocation[1]}
+                {location.nome_usina} - {location.city}, {location.state} <br />
+                Eficiência Energética: {location.average_photovoltaic_irradiation}
+              </Popup>
+            </Marker>
+          ))}
+          {clickedLocation && (
+            <Marker
+              position={[clickedLocation.lat, clickedLocation.lng]}
+            >
+              <Popup>
+                Latitude: {clickedLocation.lat}, Longitude: {clickedLocation.lng}
               </Popup>
             </Marker>
           )}
-          {locations.map((location, index) => (
-            <Marker
-              key={index}
-              position={[parseFloat(location.latitude), parseFloat(location.longitude)]}
-            >
-              <Popup>
-                {location.nome_usina} - {location.city}, {location.state}
-              </Popup>
-            </Marker>
-          ))}
-          {solarPlants.map((plant, index) => (
-            <Marker key={`solar-${index}`} position={[plant.latitude, plant.longitude]}>
-              <Popup>{plant.name}</Popup>
-            </Marker>
-          ))}
         </MapContainer>
       </div>
     </div>
