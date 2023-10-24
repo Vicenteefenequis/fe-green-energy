@@ -8,7 +8,11 @@ import Project from "./containers/Project";
 import Cadastro from "./containers/Cadastro";
 import ProjectState from "./containers/ProjectState";
 import ComparationState from "./containers/ComparationState";
+<<<<<<< HEAD
 import BrazilMap from "./components/BrazilMap";
+=======
+import IndicatorByItem from "./components/indicator/IndicatorByItem";
+>>>>>>> master
 
 const router = createBrowserRouter([
   {
@@ -46,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: "/cadastro",
     element: <Cadastro />,
+  },
+  {
+    path: "/indicadores",
+    element: <IndicatorByItem/>,
   },
 ]);
 
