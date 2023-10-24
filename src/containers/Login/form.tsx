@@ -1,76 +1,97 @@
-import { FormikProps, withFormik } from "formik";
+import { FormikErrors, FormikProps, withFormik } from "formik";
 import React from "react";
 import { User } from "../../models/user";
+import * as Yup from "yup";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Box, TextField, Grid, Link, FormHelperText } from "@mui/material";
 
 type FormValues = User.Login;
 
 type FormProps = {
-  onSubmit: (values: FormValues) => void;
+    onSubmit: (values: FormValues) => void;
+    isLoadingLogin: boolean;
 };
 
 const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
-  handleSubmit,
-  values,
-  setFieldValue,
+    handleSubmit,
+    values,
+    setFieldValue,
+    errors,
+    isLoadingLogin,
+    submitCount,
 }) => {
-  return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
-      <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          Email
-        </label>
-        <div className="mt-2">
-          <input
-            value={values.email}
-            onChange={(e) => setFieldValue("email", e.target.value)}
-            id="email"
-            name="email"
-            required
-            className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-      </div>
+    const hasError = (field: keyof FormikErrors<User.Login>) =>
+        !!errors[field] && submitCount > 0;
 
-      <div>
-        <div className="flex items-center justify-between">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Password
-          </label>
-        </div>
-        <div className="mt-2">
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            value={values.password}
-            onChange={(e) => setFieldValue("password", e.target.value)}
-            required
-            className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-      </div>
+    return (
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        name="email"
+                        autoComplete="email"
+                        error={hasError("email")}
+                        onChange={e => setFieldValue("email", e.target.value)}
+                        helperText={hasError("email") && errors.email}
 
-      <button
-        type="submit"
-        className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      >
-        Entrar
-      </button>
-    </form>
-  );
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        name="password"
+                        label="Senha"
+                        type="password"
+                        id="password"
+                        error={hasError("password")}
+                        onChange={e => setFieldValue("password", e.target.value)}
+                        helperText={hasError("password") && errors.password}
+                    />
+
+                </Grid>
+
+
+            </Grid>
+
+            <LoadingButton
+                loading={isLoadingLogin}
+                loadingPosition="start"
+                variant="contained"
+                fullWidth
+                type="submit"
+                sx={{ mt: 3, mb: 2 }}
+            >
+                Entrar
+            </LoadingButton>
+
+            <Grid container justifyContent="flex-end">
+                <Grid item>
+                    <Link href="/registro" variant="body2">
+                        Você não tem uma conta? Registre-se
+                    </Link>
+                </Grid>
+            </Grid>
+        </Box>
+    );
 };
 
-const LoginForm = withFormik<FormProps, FormValues>({
-  handleSubmit: (values, { props }) => {
-    props.onSubmit(values);
-  },
+const validationSchema = Yup.object().shape({
+    email: Yup.string().email("Email inválido").required("Campo obrigatório"),
+    password: Yup.string()
+        .min(8, "Senha tem que ter no minínimo 8 caracteres")
+        .required("Campo obrigatório"),
+});
+
+const SignupForm = withFormik<FormProps, FormValues>({
+    validationSchema: validationSchema,
+    handleSubmit: (values, { props }) => {
+        props.onSubmit(values);
+    },
 })(Form);
 
-export default LoginForm;
+export default SignupForm;

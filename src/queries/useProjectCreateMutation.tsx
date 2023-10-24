@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postIndicator } from "../services/postIndicator";
 import { toast } from "react-toastify";
+import { postProject } from "../services/postProject";
 
-export const useIndicatorMutation = () => {
+export const useProjectCreateMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["create-indicator"],
-    mutationFn: postIndicator,
+    mutationKey: ["create-project"],
+    mutationFn: postProject,
     onSuccess: () => {
-      queryClient.invalidateQueries(["indicators"]);
+      queryClient.invalidateQueries(["projects"]);
       toast("Indicador criado com sucesso!");
     },
   });

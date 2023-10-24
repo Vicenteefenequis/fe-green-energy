@@ -1,50 +1,53 @@
-import React, { useEffect } from "react";
-import LoginForm from "./form";
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
+
 import { useAuthMutation } from "../../queries/useAuthMutation";
-import { Link, useNavigate } from "react-router-dom";
-import SideImage from "../../components/SideImage";
+import Form from "./form";
 
-const Login: React.FC = () => {
-  const navigate = useNavigate();
-  const { mutate: mutateAuth, isSuccess, data } = useAuthMutation();
+export default function SignInSide() {
+  const { mutate: login, isLoading: isLoadingAuth } = useAuthMutation();
 
-  useEffect(() => {
-    if (isSuccess) {
-      localStorage.setItem("@auth", JSON.stringify(data));
-      navigate("/");
-    }
-  }, [data, isSuccess, navigate]);
+
+
   return (
-    <SideImage>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-45 w-auto"
-            src="https://cdn.dribbble.com/users/2092693/screenshots/5551684/green_energy-01.jpg"
-            alt="Green Energy"
-          />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Realizar login
-          </h2>
-        </div>
+    <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        sx={{
+          backgroundImage: "url(https://th.bing.com/th/id/OIG.FmWhU1ekmfWgCAQTSQpH?pid=ImgGn)",
+          backgroundRepeat: "no-repeat",
+          backgroundColor: (t) =>
+            t.palette.mode === "light"
+              ? t.palette.grey[50]
+              : t.palette.grey[900],
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+      <Grid item xs={12} sm={8} md={5} alignSelf={"center"} >
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "green" }}>
+            <ElectricBoltIcon />
+          </Avatar>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <LoginForm onSubmit={(e) => mutateAuth(e)} />
-        </div>
-
-        <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
-          <div className="text-sm text-center">
-            <Link
-              to={"/registro"}
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Não tem uma conta? Registre-se
-            </Link>
-          </div>
-        </div>
-      </div>
-    </SideImage>
+          <Form onSubmit={e => login(e)} isLoadingLogin={isLoadingAuth} />
+        </Box>
+      </Grid>
+    </Grid>
   );
-};
-
-export default Login;
+}
