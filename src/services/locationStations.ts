@@ -1,10 +1,14 @@
-import axios from "axios";
-import {LocationStation } from "../models/stationsLocations";
+import { TStateFilterResult } from "../interfaces/api";
+import { request } from "../api/requester";
+import { Response } from "../interfaces"
+import { LocationAPI } from "../models/stationsLocations";
 
-const BASE_URL = "http://localhost:8080/api/v1";
 
-export const fetchLocationStations = async (): Promise<LocationStation[]> => {
-  return mockLocations;
+export const fetchLocationStations = async (): Promise<Response<LocationAPI>> => {
+  const { data } = await request().get<Response<LocationAPI>>(
+      "locationsStations/"
+  );
+  return data;
 };
 
 const mockLocations = [
