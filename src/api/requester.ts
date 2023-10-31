@@ -30,8 +30,8 @@ export const request = (config?: AxiosRequestConfig, contentType?: string) => {
   );
 
   return {
-    async get<T>(uri: string): Promise<AxiosResponse<T>> {
-      return await service.get<T>(uri, { withCredentials: true });
+    async get<T, R = any>(uri: string, params?: R): Promise<AxiosResponse<T>> {
+      return await service.get<T>(uri, { withCredentials: true, params });
     },
     async post<T>(uri: string, data: unknown): Promise<AxiosResponse<T>> {
       return await service.post<T>(uri, data, { withCredentials: true });

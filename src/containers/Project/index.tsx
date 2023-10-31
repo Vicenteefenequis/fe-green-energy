@@ -4,6 +4,8 @@ import Header from "../../components/Header";
 import { useIndicatorById } from "../../queries/useIndicator";
 import Loader from "../../components/Loader";
 import Chart from "react-google-charts";
+import { Box, Button, Typography } from "@mui/material";
+import SelectLocation from "./select-location";
 
 const OPTIONS = {
   vAxis: { title: "Porcentagem" },
@@ -13,16 +15,66 @@ const OPTIONS = {
 };
 
 const Project: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id = "" } = useParams<{ id: string }>();
+  const [location, setLocation] = React.useState<{ lat: number | undefined, long: number | undefined }>({ lat: undefined, long: undefined });
 
   const { data: indicators, isLoading: isLoadingIndicator } = useIndicatorById(
-    id || ""
+    { id, latitude: location?.lat, longitude: location?.long }
   );
+
+  const [openModal, setOpenModal] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
 
 
   return (
     <>
       <Header />
+      <Box sx={{
+        mx: 2,
+        my: 5,
+        gap: 2,
+        display: "flex",
+        flexDirection: "column"
+      }}>
+        <Typography
+          variant="h4"
+          noWrap
+          sx={{
+
+            fontWeight: 500,
+            textDecoration: "none",
+          }}
+        >
+          Principais indicadores energeticos
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 200,
+            textDecoration: "none",
+          }}
+        >
+          Compilação dos principais indicadores energéticos conforme estabelecido pela norma ISO 37120:2017. Esses indicadores fornecem uma visão clara do uso de energia elétrica residencial per capita e da porcentagem de habitantes de diferentes cidades com fornecimento regular de energia elétrica. Além disso, oferecemos uma funcionalidade inovadora que permite aos usuários visualizar o impacto potencial da energia fotovoltaica. Ao clicar nesta opção, é possível observar como os dados se transformariam com a integração desta fonte de energia sustentável. Esta ferramenta visa não apenas informar, mas também inspirar a adoção de soluções energéticas mais limpas e eficientes nas cidades.
+        </Typography>
+      </Box>
+      <Button
+        sx={{
+          mx: 2,
+        }}
+        onClick={handleClickOpen}
+        color="primary"
+        variant="contained"
+        size="small"
+      >
+        Geração de energia fotovoltaica
+      </Button>
       <Loader isLoading={isLoadingIndicator} />
 
       {indicators?.map((indicator, key) => (
@@ -45,7 +97,7 @@ const Project: React.FC = () => {
           }}
         />
       ))}
-
+      <SelectLocation show={openModal} onClose={handleClose} onSelectLocation={(lat, long) => setLocation({ lat, long })} />
     </>
   );
 };

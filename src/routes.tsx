@@ -8,7 +8,6 @@ import Project from "./containers/Project";
 import Cadastro from "./containers/Cadastro";
 import ProjectState from "./containers/ProjectState";
 import ComparationState from "./containers/ComparationState";
-import BrazilMap from "./components/BrazilMap";
 import IndicatorByItem from "./components/indicator/IndicatorByItem";
 
 const router = createBrowserRouter([
@@ -29,10 +28,6 @@ const router = createBrowserRouter([
     element: <CreateProject />,
   },
   {
-    path: "/mapa-brasil",
-    element: <BrazilMap />,
-  },
-  {
     path: "/criar/projeto/estado",
     element: <ProjectState />,
   },
@@ -50,7 +45,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/indicadores",
-    element: <IndicatorByItem/>,
+    element: <IndicatorByItem />,
   },
 ]);
 

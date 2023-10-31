@@ -37,6 +37,12 @@ export type TDataIndicatorResult = {
     location_name: string;
     value: number;
 }
+
+export type TIndicatorRequest = {
+    id: string;
+    latitude?: number;
+    longitude?: number;
+}
 export type TIndicatorResult = {
     name: string;
     unit: string;
