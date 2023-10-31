@@ -86,6 +86,7 @@ const SelectLocation: React.FC<Props> = ({ show, onClose, onSelectLocation }: Pr
         };
         onSelectLocation(clickedLocation?.lat, clickedLocation?.lng)
         onClose()
+        handleClose();
         setClickedLocation(null);
     }
 
