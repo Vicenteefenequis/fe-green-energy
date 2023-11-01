@@ -1,12 +1,7 @@
-export namespace LocationAPI {
-    export type Location = {
+    export type LocationAPI = {
       latitude: string;
       longitude: string;
       city: string;
       nome_usina: string;
       state: string;
     };
-  
-    export type Output = Location[];
-  }
-  
