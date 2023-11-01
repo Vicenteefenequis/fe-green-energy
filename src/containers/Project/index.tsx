@@ -32,6 +32,9 @@ const Project: React.FC = () => {
     setOpenModal(false);
   };
 
+  const uncertifiedLocation = indicators?.find(indicator => 
+    indicator.data?.some(item => !item.is_certified)
+  )?.data?.[0]?.location_name;
 
   return (
     <>
@@ -97,8 +100,12 @@ const Project: React.FC = () => {
           }}
         />
       ))}
-      <SelectLocation show={openModal} onClose={handleClose} onSelectLocation={(lat, long) => setLocation({ lat, long })} />
-    </>
+        <SelectLocation 
+          show={openModal} 
+          onClose={handleClose} 
+          onSelectLocation={(lat, long) => setLocation({ lat, long })}
+          locationName= {uncertifiedLocation}
+/>    </>
   );
 };
 

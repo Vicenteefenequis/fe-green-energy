@@ -36,6 +36,7 @@ export type TProjectCreateBody = {
 export type TDataIndicatorResult = {
     location_name: string;
     value: number;
+    is_certified: boolean;
 }
 
 export type TIndicatorRequest = {
