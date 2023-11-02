@@ -68,18 +68,19 @@ const SelectLocation: React.FC<Props> = ({ show, onClose, onSelectLocation, loca
                 const longitude = event.latlng.lng;
                 const input: GeocodeInput = { latitude: latitude, longitude: longitude };
         
-                fetchGeocodeByCoordinates(input)
+                fetchGeocodeByCoordinates(input, locationName)
                 .then(geocodeData => {
-                    const location = geocodeData.address.city || geocodeData.address.town || geocodeData.address.village
-                    if(locationName != location) {
+                    console.log(geocodeData); // Adicione isso para depurar
+                    if (!geocodeData.is_registered_station) {
                         toast.error("Não se pode selecionar uma localização diferente do que você cadastrou no projeto!", {position: "top-center"});
-                    }else{
+                    } else {
                         setClickedLocation(event.latlng);
-                        setOpenModal(true)
+                        setOpenModal(true);
                     }
                 })
                 .catch(error => {
-                    alert("Erro ao obter os dados de geocode" + error);
+                    console.error("Erro ao obter os dados de geocode", error);
+                    alert("Erro ao obter os dados de geocode: " + error.message);
                 });
             }
         });
