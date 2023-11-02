@@ -70,7 +70,7 @@ const SelectLocation: React.FC<Props> = ({ show, onClose, onSelectLocation, loca
         
                 fetchGeocodeByCoordinates(input, locationName)
                 .then(geocodeData => {
-                    console.log(geocodeData); // Adicione isso para depurar
+                    console.log(geocodeData);
                     if (!geocodeData.is_registered_station) {
                         toast.error("Não se pode selecionar uma localização diferente do que você cadastrou no projeto!", {position: "top-center"});
                     } else {
