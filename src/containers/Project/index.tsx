@@ -8,7 +8,7 @@ import { Box, Button, Typography } from "@mui/material";
 import SelectLocation from "./select-location";
 
 const OPTIONS = {
-  vAxis: { title: "Porcentagem" },
+  vAxis: { title: "Valor" },
   hAxis: { title: "Cidades" },
   seriesType: "bars",
   series: { 1: { type: "line" } },

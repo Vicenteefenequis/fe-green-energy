@@ -4,6 +4,7 @@ export type TProjects = {
     name: string;
     description: string;
     location_name: string;
+    location_id: string;
     created_at: string;
     updated_at: string;
 }

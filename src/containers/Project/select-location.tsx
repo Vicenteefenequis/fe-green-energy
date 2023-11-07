@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Drawer, Modal } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css'; // Importe o CSS do leaflet
@@ -14,13 +14,7 @@ type Props = {
 }
 
 const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '100vh',
-    bgcolor: 'background.paper',
-    p: 4,
+    width: 500,
 };
 
 
@@ -91,11 +85,12 @@ const SelectLocation: React.FC<Props> = ({ show, onClose, onSelectLocation }: Pr
     }
 
     return (
-        <Modal
+        <Drawer
             open={show}
             onClose={onClose}
+            anchor="right"
         >
-            <Box style={style}>
+            <Box style={style} role="presentation">
                 <MapContainer
                     ref={mapRef}
                     style={mapStyle}
@@ -147,8 +142,11 @@ const SelectLocation: React.FC<Props> = ({ show, onClose, onSelectLocation }: Pr
                     </Dialog>
                 </MapContainer>
             </Box>
-        </Modal>
+        </Drawer>
     );
 }
 
 export default SelectLocation;
+
+
+

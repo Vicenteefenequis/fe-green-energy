@@ -15,11 +15,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import { IndicatorItem } from "../ProjectState/components";
 import { useStateFilterQuery } from "../../queries/useStateFilterQuery";
 import { useStateBatchMutation } from "../../queries/useStateBatchMutation";
 import Loader from "../../components/Loader";
-
+import { BarChart } from '@mui/x-charts/BarChart';
+import { axisClasses } from "@mui/x-charts/ChartsAxis";
+import CustomChart from "../ProjectMain/Charts";
+import Chart from "react-google-charts";
 
 const style = {
   position: "absolute" as const,
@@ -33,6 +35,12 @@ const style = {
   p: 4,
 };
 
+const OPTIONS = {
+  vAxis: { title: "Valor" },
+  hAxis: { title: "Cidades" },
+  seriesType: "bars",
+  series: { 1: { type: "line" } },
+};
 const ComparationState: React.FC = () => {
   const { state = "" } = useParams<{ state: string }>();
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
@@ -85,18 +93,37 @@ const ComparationState: React.FC = () => {
           Adicionar
         </Button>
       </Card>
-
-      {dataIndicators?.map((indicator, key) => (
-        <IndicatorItem
+      {/* 
+      <IndicatorItem
           key={key}
           indicatorLabel={indicator.name}
           charts={indicator.data.map((data => ({
             label: data.location_name,
             value: data.value
           })))}
-        />
-      ))}
-
+        /> */}
+      <Box sx={{ mt: 5, my: 5, mx: 10 }}>
+        {dataIndicators?.map((indicator, key) => (
+          <Chart
+            key={key}
+            chartType="ComboChart"
+            width="100%"
+            height="400px"
+            data={[
+              ["Cidades", `${indicator.unit}`, "Media"],
+              ...indicator?.data.map((data) => [
+                data.location_name,
+                data.value,
+                indicator.average
+              ]) || [],
+            ]}
+            options={{
+              ...OPTIONS,
+              title: indicator.name,
+            }}
+          />
+        ))}
+      </Box>
       <Modal
         open={open}
         onClose={handleClose}

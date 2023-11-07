@@ -58,7 +58,7 @@ export default function App() {
             </Card>
           }
           WhenTrue={projects?.results.map((project, key) => (
-            <Card onClick={() => navigate(`/projeto/${project.id}`)} variant="outlined" key={key} sx={{
+            <Card onClick={() => navigate(`/projeto/${project.location_id}`)} variant="outlined" key={key} sx={{
               mx: 5,
               my: 5,
               ":hover": {
