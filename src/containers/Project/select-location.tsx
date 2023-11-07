@@ -6,11 +6,13 @@ import goiasData from './brazilstates.json'
 import { Feature, FeatureCollection } from 'geojson';
 import L from 'leaflet';
 import { toast } from 'react-toastify';
+import { GeocodeInput, fetchGeocodeByCoordinates } from '../../services/geoconding';
 
 type Props = {
     show: boolean;
     onClose: () => void;
     onSelectLocation: (lat: number, long: number) => void;
+    locationName?: string;
 }
 
 const style = {
@@ -18,7 +20,7 @@ const style = {
 };
 
 
-const SelectLocation: React.FC<Props> = ({ show, onClose, onSelectLocation }: Props) => {
+const SelectLocation: React.FC<Props> = ({ show, onClose, onSelectLocation, locationName }: Props) => {
     const mapStyle = {
         width: "100%",
         height: "1000px",
@@ -58,9 +60,23 @@ const SelectLocation: React.FC<Props> = ({ show, onClose, onSelectLocation }: Pr
             click: (event) => {
                 const latitude = event.latlng.lat;
                 const longitude = event.latlng.lng;
-                setOpenModal(true)
-                setClickedLocation({ lat: latitude, lng: longitude });
-            },
+                const input: GeocodeInput = { latitude: latitude, longitude: longitude };
+        
+                fetchGeocodeByCoordinates(input, locationName)
+                .then(geocodeData => {
+                    console.log(geocodeData);
+                    if (!geocodeData.is_registered_station) {
+                        toast.error("Não se pode selecionar uma localização diferente do que você cadastrou no projeto!", {position: "top-center"});
+                    } else {
+                        setClickedLocation(event.latlng);
+                        setOpenModal(true);
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao obter os dados de geocode", error);
+                    alert("Erro ao obter os dados de geocode: " + error.message);
+                });
+            }
         });
     };
 
