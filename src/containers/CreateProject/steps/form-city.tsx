@@ -1,79 +1,70 @@
 import { FormikErrors, FormikProps, withFormik } from "formik";
 import React, { useEffect, useMemo } from "react";
 import * as Yup from "yup";
-import { Box, TextField, Grid } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Grid,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+} from "@mui/material";
 import { ControlStep } from "..";
 import { useStepContext } from "../hook";
+import { useLocationListQuery } from "../../../queries/useLocationListQuery";
+import { TYPE_LOCATION } from "../../../interfaces/api";
+import Loader from "../../../components/Loader";
 
 type FormValues = {
-    city: string;
-    population: number;
+  city: string;
+  population: number;
 };
 
 type FormProps = {
-    onSubmit: (values: FormValues) => void;
+  onSubmit: (values: FormValues) => void;
 };
 
 const Form: React.FC<FormProps & FormikProps<FormValues>> = ({
-    handleSubmit,
-    values,
-    setFieldValue,
-    errors,
-    submitCount,
+  handleSubmit,
+  setFieldValue,
 }) => {
-    const hasError = (field: keyof FormikErrors<FormValues>) =>
-        !!errors[field] && submitCount > 0;
+  const { data, isLoading } = useLocationListQuery(TYPE_LOCATION.CITY);
 
+  if (isLoading) return <Loader isLoading={true} />;
 
-    return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2} px={5}>
-                <Grid item xs={12}>
-                    <TextField
-                        name="city"
-                        required
-                        value={values.city}
-                        fullWidth
-                        id="city"
-                        label="Cidade"
-                        autoFocus
-                        error={hasError("city")}
-                        onChange={e => setFieldValue("city", e.target.value)}
-                        helperText={hasError("city") && errors.city}
-                    />
-                </Grid>
+  return (
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      <Grid container spacing={2} px={5}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Cidade</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Cidade"
+            onChange={(e) => setFieldValue("location", e.target.value)}
+          >
+            {data?.map((value) => (
+              <MenuItem value={value.id}>{value.name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        fullWidth
-                        name="population"
-                        label="População"
-                        id="population"
-                        type="number"
-                        value={values.population}
-                        error={hasError("population")}
-                        onChange={e => setFieldValue("population", e.target.value)}
-                        helperText={hasError("population") && errors.population}
-                    />
-                </Grid>
-
-                <ControlStep />
-            </Grid>
-        </Box>
-    );
+        <ControlStep />
+      </Grid>
+    </Box>
+  );
 };
 
 const validationSchema = Yup.object().shape({
-    city: Yup.string().required("Campo obrigatório"),
-    population: Yup.string().required("Campo obrigatório"),
+  location: Yup.string().required("Campo obrigatório"),
 });
 
 const FormStepCity = withFormik<FormProps, FormValues>({
-    validationSchema: validationSchema,
-    handleSubmit: (values, { props }) => {
-        props.onSubmit(values);
-    },
+  validationSchema: validationSchema,
+  handleSubmit: (values, { props }) => {
+    props.onSubmit(values);
+  },
 })(Form);
 
 export default FormStepCity;

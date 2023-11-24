@@ -15,13 +15,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import { useStateFilterQuery } from "../../queries/useStateFilterQuery";
-import { useStateBatchMutation } from "../../queries/useStateBatchMutation";
+import { useStateBatchQuery } from "../../queries/useStateBatchQuery";
 import Loader from "../../components/Loader";
-import { BarChart } from '@mui/x-charts/BarChart';
-import { axisClasses } from "@mui/x-charts/ChartsAxis";
-import CustomChart from "../ProjectMain/Charts";
 import Chart from "react-google-charts";
+import { useLocationListQuery } from "../../queries/useLocationListQuery";
+import { TYPE_LOCATION } from "../../interfaces/api";
 
 const style = {
   position: "absolute" as const,
@@ -50,22 +48,10 @@ const ComparationState: React.FC = () => {
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
 
-  const { data: stateFilter } = useStateFilterQuery()
+  const { data: stateFilter } = useLocationListQuery(TYPE_LOCATION.STATE);
 
-  const { mutate: mutateStateBatch, data: dataIndicators, isLoading: isLoadingBatch } = useStateBatchMutation()
-
-
-  useEffect(() => {
-    if (!state) {
-      navigate('/not-found')
-      return;
-    }
-    mutateStateBatch([state])
-  }, [state])
-
-  useEffect(() => {
-    mutateStateBatch([...selectedStates, state])
-  }, [selectedStates, state])
+  const { data: dataIndicators, isLoading: isLoadingBatch } =
+    useStateBatchQuery([...selectedStates, state]);
 
   return (
     <div>
@@ -75,7 +61,10 @@ const ComparationState: React.FC = () => {
         <Chip
           deleteIcon={<EditIcon />}
           onDelete={() => navigate("/criar/projeto/estado")}
-          label={stateFilter?.results.find(stateFilter => stateFilter.slug === state)?.name}
+          label={
+            stateFilter?.find((stateFilter) => stateFilter.acronym === state)
+              ?.name
+          }
         />
         {selectedStates
           .filter((state) => !!state)
@@ -86,22 +75,18 @@ const ComparationState: React.FC = () => {
               onDelete={() =>
                 setSelectedStates((old) => old.filter((item) => item !== state))
               }
-              label={stateFilter?.results.find(stateFilter => stateFilter.slug === state)?.name}
+              label={
+                stateFilter?.find(
+                  (stateFilter) => stateFilter.acronym === state
+                )?.name
+              }
             />
           ))}
         <Button endIcon={<AddIcon />} sx={{ ml: 5 }} onClick={handleOpen}>
           Adicionar
         </Button>
       </Card>
-      {/* 
-      <IndicatorItem
-          key={key}
-          indicatorLabel={indicator.name}
-          charts={indicator.data.map((data => ({
-            label: data.location_name,
-            value: data.value
-          })))}
-        /> */}
+
       <Box sx={{ mt: 5, my: 5, mx: 10 }}>
         {dataIndicators?.map((indicator, key) => (
           <Chart
@@ -111,11 +96,11 @@ const ComparationState: React.FC = () => {
             height="400px"
             data={[
               ["Cidades", `${indicator.unit}`, "Media"],
-              ...indicator?.data.map((data) => [
+              ...(indicator?.data.map((data) => [
                 data.location_name,
                 data.value,
-                indicator.average
-              ]) || [],
+                indicator.average,
+              ]) || []),
             ]}
             options={{
               ...OPTIONS,
@@ -156,9 +141,14 @@ const ComparationState: React.FC = () => {
                 setOpen(false);
               }}
             >
-              {stateFilter?.results.filter(s => s.slug !== state).filter(state => !selectedStates.includes(state.slug)).map((state, key) => (
-                <MenuItem key={key} value={state.slug}>{state.name}</MenuItem>
-              ))}
+              {stateFilter
+                ?.filter((s) => s.acronym !== state)
+                .filter((state) => !selectedStates.includes(state.acronym))
+                .map((state, key) => (
+                  <MenuItem key={key} value={state.acronym}>
+                    {state.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Box>

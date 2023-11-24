@@ -18,9 +18,8 @@ export namespace Indicator {
 
   export type Input = {
     name: string;
-    city: string;
     description: string;
-    population: number;
+    location: string;
     total_residential_electricity_use: number;
     number_of_people_with_regular_connection: number;
     total_electricity_consumption_in_public_buildings: number;

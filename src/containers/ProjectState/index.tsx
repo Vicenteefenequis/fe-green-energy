@@ -1,16 +1,21 @@
 import React from "react";
-import { MAPPED_INDICATORS } from "../../models/indicator";
 import Header from "../../components/Header";
 import MapChart from "../../components/MapChart";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
-import { useStateFilterQuery } from "../../queries/useStateFilterQuery";
 import { toast } from "react-toastify";
+import { useLocationListQuery } from "../../queries/useLocationListQuery";
+import { TYPE_LOCATION } from "../../interfaces/api";
+import Loader from "../../components/Loader";
 
 const ProjectState: React.FC = () => {
   const navigate = useNavigate();
 
-  const { data: stateFilter } = useStateFilterQuery()
+  const { data: stateFilter, isLoading } = useLocationListQuery(
+    TYPE_LOCATION.STATE
+  );
+
+  if (isLoading) return <Loader isLoading />;
 
   return (
     <Box>
@@ -20,12 +25,17 @@ const ProjectState: React.FC = () => {
           Mapa de indicadores por estado
         </Typography>
 
-        <Typography variant="body1" >
-          Selecione um estado para visualizar os indicadores e poder comparar entre eles.
+        <Typography variant="body1">
+          Selecione um estado para visualizar os indicadores e poder comparar
+          entre eles.
         </Typography>
       </Box>
       <MapChart
-        selectState={(state) => stateFilter?.results.some(stateFilter => stateFilter.slug === state) ? navigate(`/comparar/estado/${state}`) : toast.error('Estado sem dados disponíveis')}
+        selectState={(state) =>
+          stateFilter?.some((stateFilter) => stateFilter.acronym === state)
+            ? navigate(`/comparar/estado/${state}`)
+            : toast.error("Estado sem dados disponíveis")
+        }
       />
     </Box>
   );
