@@ -35,7 +35,7 @@ const style = {
 
 const OPTIONS = {
   vAxis: { title: "Valor" },
-  hAxis: { title: "Cidades" },
+  hAxis: { title: "Estados" },
   seriesType: "bars",
   series: { 1: { type: "line" } },
 };
@@ -95,7 +95,7 @@ const ComparationState: React.FC = () => {
             width="100%"
             height="400px"
             data={[
-              ["Cidades", `${indicator.unit}`, "Media"],
+              ["Estados", `${indicator.unit}`, "Media"],
               ...(indicator?.data.map((data) => [
                 data.location_name,
                 data.value,
