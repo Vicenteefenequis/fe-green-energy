@@ -8,6 +8,7 @@ import Swap from "../../components/Swap";
 import { Card, CardContent, Typography, Button, Box } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import AlertDialog from "../../components/Dialog";
+import moment from "moment";
 
 export default function App() {
   const navigate = useNavigate();
@@ -86,7 +87,11 @@ export default function App() {
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                   {project.location_name}
                 </Typography>
-                <Typography variant="body2">{project.created_at}</Typography>
+                {project.created_at && (
+                  <Typography variant="body2">
+                    {moment(project.created_at).format("DD/MM/YYYY")}
+                  </Typography>
+                )}
               </CardContent>
             </Card>
           ))}
